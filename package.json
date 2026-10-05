@@ -1,0 +1,72 @@
+{
+  "name": "storymap",
+  "private": true,
+  "version": "2.6.0",
+  "productName": "AI Novel Analyzer",
+  "main": "electron/main.cjs",
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace frontend",
+    "build": "npm run build --workspace frontend",
+    "lint": "echo 'no linter configured'",
+    "test": "npm test --workspaces --if-present",
+    "desktop:package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-desktop.ps1",
+    "desktop:portable": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-desktop.ps1 -Target portable"
+  },
+  "build": {
+    "appId": "org.ops120.ai-novel-screenplay-analyzer",
+    "productName": "AI Novel Analyzer",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/dist/storymap-backend.exe",
+        "to": "backend/storymap-backend.exe"
+      },
+      {
+        "from": "frontend/dist",
+        "to": "frontend"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "AI-Novel-Analyzer-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AI Novel Analyzer",
+      "installerLanguages": [
+        "zh_CN",
+        "en_US"
+      ],
+      "language": "zh_CN"
+    }
+  },
+  "devDependencies": {
+    "ajv": "^6.12.6",
+    "debug": "^4.3.2",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "globals": "^14.0.0",
+    "js-yaml": "^4.3.2",
+    "minimatch": "^3.1.5"
+  }
+}
